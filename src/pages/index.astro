@@ -1,219 +1,895 @@
----
-import { getCollection } from "astro:content"
-import PageLayout from "@layouts/PageLayout.astro"
-import ArrowCard from "@components/ArrowCard"
-import StackCard from "@components/StackCard.astro"
-import { SITE, SOCIALS } from "@consts"
-import TwinklingStars from "@components/TwinklingStars.astro"
-import MeteorShower from "@components/MeteorShower.astro"
+<!DOCTYPE html>
+<html lang="en">
 
-const posts = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0,3)
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brittek™ Digital - Premium Digital Assets & Web Solutions</title>
+  <meta name="description" content="Elevate your digital presence with Brittek™ Digital's high-quality assets and expert web services.">
+  <link rel="icon" href="https://i.ibb.co/YN3XTy6/13-1.png">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #9eff00;
+      --background: #121212;
+      --text: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.7);
+      --card-bg: #1e1e1e;
+      --transition: 0.3s ease;
+    }
 
-const projects = (await getCollection("projects"))
-  .filter(project => !project.data.draft)
-  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0,3)
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-const stack = [
-  { 
-    text: "Astro", 
-    icon: "astro", 
-    href: "https://astro.build" 
-  },
-  { 
-    text: "Javascript", 
-    icon: "javascript", 
-    href: "https://www.javascript.com" 
-  },
-  { 
-    text: "Typescript", 
-    icon: "typescript", 
-    href: "https://www.typescriptlang.org" 
-  },
-  { 
-    text: "Tailwind", 
-    icon: "tailwind", 
-    href: "https://tailwindcss.com" 
-  },
-]
----
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--background);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
 
-<PageLayout title="Home" description={SITE.DESCRIPTION}>
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
 
-  <!-- Light Mode: Particles -->
-  <div class='absolute inset-0 block dark:hidden'>
-    <div id='particles1' class='fixed inset-0'></div>
-    <div id='particles2' class='fixed inset-0'></div>
-    <div id='particles3' class='fixed inset-0'></div>
-  </div>
+    header {
+      background-color: rgba(18, 18, 18, 0.8);
+      backdrop-filter: blur(10px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      transition: background-color var(--transition);
+      padding: 1rem 0;
+    }
 
-  <!-- Dark Theme: Stars -->
-  <div class='absolute inset-0 bg-black hidden dark:block'>
-    <div id='stars1' class='fixed inset-0'></div>
-    <div id='stars2' class='fixed inset-0'></div>
-    <div id='stars3' class='fixed inset-0'></div>
-  </div>
+    .nav-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-  <!-- Dark Theme: Twinkling Stars / Metors -->
-  <div id="galaxy" class="fixed inset-0">
-    <div class="hidden dark:block">
-      <TwinklingStars/>
-      <MeteorShower/>
+    .logo {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo img {
+      width: 40px;
+      height: 40px;
+      margin-right: 0.5rem;
+    }
+
+    .logo span {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+
+    nav a {
+      color: var(--text);
+      text-decoration: none;
+      transition: color var(--transition);
+      margin-left: 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .hero {
+      padding: 8rem 0 4rem;
+      text-align: center;
+      background: linear-gradient(to bottom, #121212, #1a1a1a);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      line-height: 1.2;
+      animation: fadeInDown var(--transition) forwards;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      color: var(--text-secondary);
+      animation: fadeInUp var(--transition) forwards;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border-radius: 50px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all var(--transition);
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--background);
+    }
+
+    .btn-primary:hover {
+      background-color: #b3ff33;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--text);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: var(--background);
+      transform: translateY(-2px);
+    }
+
+    .hero-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    section {
+      padding: 6rem 0;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: var(--primary);
+      margin: 0.5rem auto 0;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+
+    .service-card {
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 2rem;
+      transition: transform var(--transition), box-shadow var(--transition);
+      text-align: center;
+    }
+
+    .service-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .service-card i {
+      color: var(--primary);
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .about {
+      background-color: var(--card-bg);
+    }
+
+    .about-content {
+      display: flex;
+      align-items: center;
+      gap: 4rem;
+    }
+
+    .about-text {
+      flex: 1;
+    }
+
+    .about-image {
+      flex: 1;
+      text-align: center;
+    }
+
+    .about-image img {
+      max-width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .contact {
+      text-align: center;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .social-links a {
+      color: var(--text);
+      font-size: 1.5rem;
+      transition: color var(--transition);
+    }
+
+    .social-links a:hover {
+      color: var(--primary);
+    }
+
+    footer {
+      background-color: var(--card-bg);
+      color: var(--text-secondary);
+      padding: 3rem 0;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .footer-links h3 {
+      color: var(--text);
+      margin-bottom: 1rem;
+    }
+
+    .footer-links ul {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .testimonial-slider {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .testimonial-slide {
+      display: none;
+      padding: 2rem;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+
+    .testimonial-slide.active {
+      display: block;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    .testimonial-author {
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .result-card {
+      background-color: var(--card-bg);
+      padding: 2rem;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .result-card h3 {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .product-carousel {
+      position: relative;
+      overflow: hidden;
+      padding: 2rem 0;
+    }
+
+    .product-carousel-inner {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+
+    .product-card {
+      flex: 0 0 300px;
+      margin-right: 2rem;
+      background-color: var(--card-bg);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-bottom: 1rem;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .portfolio-item {
+      position: relative;
+      overflow: hidden;
+      border-radius: 10px;
+      height: 300px;
+    }
+
+    .portfolio-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--transition);
+    }
+
+    .portfolio-item:hover img {
+      transform: scale(1.05);
+    }
+
+    .portfolio-item-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 1rem;
+      transform: translateY(100%);
+      transition: transform var(--transition);
+    }
+
+    .portfolio-item:hover .portfolio-item-overlay {
+      transform: translateY(0);
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .about-content {
+        flex-direction: column;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    @keyframes fadeInDown {
+      0% {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      0% {
+        opacity: 0;
+      }
+
+      100% {
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container nav-container">
+      <a href="#" class="logo">
+        <img src="https://i.ibb.co/YN3XTy6/13-1.png" alt="Brittek™ Digital">
+        <span>Brittek™ Digital</span>
+      </a>
+      <nav>
+        <a href="#digital-assets-portfolio">Digital Assets & Portfolio</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </div>
-  </div>
+  </header>
 
-  <script is:inline src="/js/bg.js"></script>
-  
-  <!-- HERO -->
-  <section class="relative h-screen w-full">
-    <div id="planetcont" class='animate absolute inset-0 top-1/4 overflow-hidden'>
-      <div id="crescent" class='absolute top-0 left-1/2 -translate-x-1/2 w-[250vw] min-h-[100vh] aspect-square rounded-full p-[1px] bg-gradient-to-b from-black/25 dark:from-white/75 from-0% to-transparent to-5%'>
-        <div id="planet" class='w-full h-full bg-white dark:bg-black rounded-full p-[1px] overflow-hidden flex justify-center'>
-          <div id="blur" class='w-full h-20 rounded-full bg-neutral-900/25 dark:bg-white/25 blur-3xl'/>
+  <main>
+    <section id="hero" class="hero">
+      <div class="container">
+        <h1>Premium Digital Solutions for Innovators</h1>
+        <p>Elevate your projects with Brittek™ Digital's cutting-edge resources and expertise.</p>
+        <div class="buttons">
+          <a href="#digital-assets-portfolio" class="btn btn-primary">Explore Products</a>
+          <a href="#services" class="btn btn-secondary">Our Services</a>
+        </div>
+        <img src="https://i.ibb.co/YN3XTy6/13-1.png" alt="Brittek Logo" class="hero-image" loading="lazy">
+      </div>
+    </section>
+
+    <section id="digital-assets-portfolio">
+      <div class="container">
+        <h2 class="section-title">Premium Digital Assets & Portfolio</h2>
+        <p>Explore our collection of high-quality digital assets and our portfolio of innovative projects.</p>
+
+        <h3 class="sub-section-title">Digital Assets</h3>
+        <div class="product-carousel">
+          <div class="product-carousel-inner">
+            <div class="product-card">
+              <img src="https://images.pexels.com/photos/9784235/pexels-photo-9784235.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Modern UI Kit">
+              <h3>Modern UI Kit</h3>
+              <p>Cutting-edge UI components for web applications.</p>
+              <a href="#" class="btn btn-secondary" data-price="$49.99">Learn More</a>
+            </div>
+            <div class="product-card">
+              <img src="https://images.pexels.com/photos/13107929/pexels-photo-13107929.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="E-Commerce Template">
+              <h3>E-Commerce Template</h3>
+              <p>Ready-to-use template for your online store.</p>
+              <a href="#" class="btn btn-secondary" data-price="$59.99">Learn More</a>
+            </div>
+            <div class="product-card">
+              <img src="https://images.pexels.com/photos/92905/pexels-photo-92905.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Mobile Mockup Pack">
+              <h3>Mobile Mockup Pack</h3>
+              <p>High-quality mockups for mobile app presentations.</p>
+              <a href="#" class="btn btn-secondary" data-price="$39.99">Learn More</a>
+            </div>
+            <div class="product-card">
+              <img src="https://images.pexels.com/photos/1597776/pexels-photo-1597776.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Wireframe Kit">
+              <h3>Wireframe Kit</h3>
+              <p>Comprehensive wireframing tools for UX designers.</p>
+              <a href="#" class="btn btn-secondary" data-price="$29.99">Learn More</a>
+            </div>
+            <div class="product-card">
+              <img src="https://images.pexels.com/photos/4069289/pexels-photo-4069289.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="AI Integration Package">
+              <h3>AI Integration Package</h3>
+              <p>Advanced AI tools for enhancing your digital products.</p>
+              <a href="#" class="btn btn-secondary" data-price="$79.99">Learn More</a>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="sub-section-title">Our Portfolio</h3>
+        <div class="portfolio-grid">
+          <div class="portfolio-item">
+            <img src="https://images.pexels.com/photos/18069861/pexels-photo-18069861/free-photo-of-an-artist-s-illustration-of-artificial-intelligence-ai-this-image-explores-how-humans-can-creatively-collaborate-with-artificial-general-intelligence-agi-in-the-future-and-how-it-can.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="AI Collaboration Platform">
+            <div class="portfolio-item-overlay">
+              <h3>AI Collaboration Platform</h3>
+              <p>Innovative AI-powered collaboration tools for businesses.</p>
+            </div>
+          </div>
+          <div class="portfolio-item">
+            <img src="https://images.pexels.com/photos/18069860/pexels-photo-18069860/free-photo-of-an-artist-s-illustration-of-artificial-intelligence-ai-this-image-explores-how-humans-can-creatively-collaborate-with-artificial-general-intelligence-agi-in-the-future-and-how-it-can.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Neural Network Visualizer">
+            <div class="portfolio-item-overlay">
+              <h3>Neural Network Visualizer</h3>
+              <p>Interactive tool for visualizing complex neural networks.</p>
+            </div>
+          </div>
+          <div class="portfolio-item">
+            <img src="https://images.pexels.com/photos/17483874/pexels-photo-17483874/free-photo-of-an-artist-s-illustration-of-artificial-intelligence-ai-this-image-was-inspired-by-neural-networks-used-in-deep-learning-it-was-created-by-novoto-studio-as-part-of-the-visualising-ai-pr.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Deep Learning Dashboard">
+            <div class="portfolio-item-overlay">
+              <h3>Deep Learning Dashboard</h3>
+              <p>Comprehensive analytics for deep learning projects.</p>
+            </div>
+          </div>
+          <div class="portfolio-item">
+            <img src="https://images.pexels.com/photos/17483869/pexels-photo-17483869/free-photo-of-an-artist-s-illustration-of-artificial-intelligence-ai-this-image-represents-how-machine-learning-is-inspired-by-neuroscience-and-the-human-brain-it-was-created-by-novoto-studio-as-par.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Neuro-Inspired ML Platform">
+            <div class="portfolio-item-overlay">
+              <h3>Neuro-Inspired ML Platform</h3>
+              <p>Machine learning tools inspired by neuroscience.</p>
+            </div>
+          </div>
+          <div class="portfolio-item">
+            <img src="https://images.pexels.com/photos/19892557/pexels-photo-19892557/free-photo-of-close-up-of-computer-component.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Hardware Optimization Suite">
+            <div class="portfolio-item-overlay">
+              <h3>Hardware Optimization Suite</h3>
+              <p>Tools for optimizing computer hardware performance.</p>
+            </div>
+          </div>
+          <div class="portfolio-item">
+            <img src="https://images.pexels.com/photos/17489157/pexels-photo-17489157/free-photo-of-close-up-of-computer-hardware.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Cloud Infrastructure Manager">
+            <div class="portfolio-item-overlay">
+              <h3>Cloud Infrastructure Manager</h3>
+              <p>Comprehensive solution for managing cloud resources.</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="animate absolute h-full w-full flex items-center justify-center">
-      <div class='relative w-full h-full flex items-center justify-center'>
-        <div class='p-5 text-center'>
-          <p class='animated text-lg md:text-xl lg:text-2xl font-semibold opacity-75'>
-            Hello, I am ...
-          </p>
-          <p class='animated text-2xl md:text-3xl lg:text-4xl font-bold uppercase text-black dark:text-white'>
-            Astro Sphere
-          </p>
-          <p class='animated text-sm md:text-base lg:text-lg opacity-75'>
-            Currently designing products for humans.
-          </p>
-          <div id="ctaButtons" class='animated flex flex-wrap gap-4 justify-center mt-5'>
-            <a href='/blog' class='py-2 px-4 rounded truncate text-xs md:text-sm lg:text-base bg-black dark:bg-white text-white dark:text-black hover:opacity-75 blend'>
-              Read my blog
-            </a>
-            <a href='/work' class='py-2 px-4 truncate rounded text-xs md:text-sm lg:text-base border border-black/25 dark:border-white/25 hover:bg-black/5 hover:dark:bg-white/15 blend'>
-              View my work
-            </a>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container">
+        <div class="about-content">
+          <div class="about-text">
+            <h2 class="section-title">About Brittek™ Digital</h2>
+            <p>At Brittek™ Digital, we specialize in creating premium digital assets and delivering exceptional web solutions. Our team of experts is dedicated to helping businesses elevate their digital presence and achieve their goals.</p>
+            <a href="#contact" class="btn btn-primary">Get in Touch</a>
+          </div>
+          <div class="about-image">
+            <img src="https://i.ibb.co/YN3XTy6/13-1.png" alt="Brittek Digital Team" loading="lazy">
           </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <div class="relative bg-white dark:bg-black">
-    <div class="mx-auto max-w-screen-sm p-5 space-y-24 pb-16">
-
-      <!-- About Section -->
-      <section class="animate">
-        <article>
-          <p>I am a <b><i>software engineer</i></b>, <b><i>ui/ux designer</i></b>, <b><i>product planner</i></b>, <b><i>mentor</i></b>, <b><i>student</i></b>, <b><i>minimalist</i></b>, <b><i>eternal optimist</i></b>, <b><i>crypto enthusiast</i></b> and <b><i>sarcasm connoisseur</i></b>.</p>
-          <p>I love to both build and break things. I am motivated by challenging projects with self-guided research and dynamic problem solving. My true passion is crafting creative front end designs with unique takes on color, typography and motion.</p>
-          <p>During my career</p>
-          <p>I have built products ranging from marketing and ecommerce websites to complex enterprise apps with focus on delivering fast, elegant code along with delightful user interfaces.</p>
-          <p>Now</p>
-          <p>I currently work as a software engineer at StreamlineFS, where I do product planning, design and development.</p>
-        </article>
-      </section>
-
-      <!-- Blog Preview Section -->
-      <section class="animate">
-        <div class="space-y-4">
-          <div class="flex justify-between">
-            <p class="font-semibold text-black dark:text-white">
-              Recent posts
-            </p>
-            <a href="/blog" class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-              <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
-                All posts
-              </span>
-            </a>
+    <section id="services">
+      <div class="container">
+        <h2 class="section-title">Our Services</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <i class="fas fa-paint-brush" aria-hidden="true"></i>
+            <h3>Web Design & Development</h3>
+            <p>Crafting responsive, user-friendly websites that engage and convert visitors.</p>
           </div>
-          <ul class="space-y-4">
-            {posts.map((post) => (
-              <li>
-                <ArrowCard entry={post} />
-              </li>
-            ))}
+          <div class="service-card">
+            <i class="fas fa-pencil-ruler" aria-hidden="true"></i>
+            <h3>UI/UX Design</h3>
+            <p>Creating intuitive, delightful user experiences based on thorough research.</p>
+          </div>
+          <div class="service-card">
+            <i class="fas fa-layer-group" aria-hidden="true"></i>
+            <h3>Digital Asset Creation</h3>
+            <p>Developing premium digital assets to enhance your projects and workflows.</p>
+          </div>
+          <div class="service-card">
+            <i class="fas fa-chart-line" aria-hidden="true"></i>
+            <h3>Digital Strategy</h3>
+            <p>Comprehensive digital strategies to drive growth and engagement.</p>
+          </div>
+          <div class="service-card">
+            <i class="fas fa-search" aria-hidden="true"></i>
+            <h3>SEO & SEM</h3>
+            <p>Boost your online visibility and attract high-quality traffic.</p>
+          </div>
+          <div class="service-card">
+            <i class="fas fa-bullhorn" aria-hidden="true"></i>
+            <h3>Social Media Marketing</h3>
+            <p>Engage your audience and build brand awareness across platforms.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="results">
+      <div class="container">
+        <h2 class="section-title">Our Results</h2>
+        <div class="results-grid">
+          <div class="result-card">
+            <h3>154%</h3>
+            <p>Increase in Conversion Rate</p>
+          </div>
+          <div class="result-card">
+            <h3>7x</h3>
+            <p>ROI on Google Ads</p>
+          </div>
+          <div class="result-card">
+            <h3>23%</h3>
+            <p>Increase in ROAS</p>
+          </div>
+          <div class="result-card">
+            <h3>9x</h3>
+            <p>Return on Ad Spend (Google + Meta)</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials">
+      <div class="container">
+        <h2 class="section-title">Client Testimonials</h2>
+        <div class="testimonial-slider">
+          <div class="testimonial-slide active">
+            <p>"Brittek Digital transformed our online presence. Their strategies significantly increased our conversions and ROI."</p>
+            <p class="testimonial-author">- Sarah Johnson, CEO of TechInnovate</p>
+          </div>
+          <div class="testimonial-slide">
+            <p>"The team at Brittek is exceptional. Their attention to detail and innovative approaches have consistently delivered results for our business."</p>
+            <p class="testimonial-author">- Michael Chen, Marketing Director at GrowthMasters</p>
+          </div>
+          <div class="testimonial-slide">
+            <p>"Working with Brittek Digital has been a game-changer for our e-commerce store. Our sales have skyrocketed since partnering with them."</p>
+            <p class="testimonial-author">- Emma Thompson, Founder of EcoStyle</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <div class="container">
+        <h2 class="section-title">Let's Connect</h2>
+        <p>Ready to transform your digital marketing? Get in touch with our experts today!</p>
+        <div class="buttons">
+          <a href="mailto:info@brittek.digital" class="btn btn-primary">
+            <i class="far fa-envelope" aria-hidden="true"></i> Email Us
+          </a>
+          <a href="tel:+61424949331" class="btn btn-secondary">
+            <i class="fas fa-phone-alt" aria-hidden="true"></i> Call Us
+          </a>
+        </div>
+        <div class="social-links">
+          <a href="https://www.instagram.com/brittekdgtl/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <i class="fab fa-instagram" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.linkedin.com/company/brittek-digital" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <i class="fab fa-linkedin" aria-hidden="true"></i>
+          </a>
+          <a href="https://twitter.com/brittekdgtl" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+            <i class="fab fa-twitter" aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-links">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="#services">Digital Strategy</a></li>
+            <li><a href="#services">SEO & SEM</a></li>
+            <li><a href="#services">Social Media Marketing</a></li>
+            <li><a href="#services">Web Design & Development</a></li>
+            <li><a href="#services">UI/UX Design</a></li>
+            <li><a href="#services">Digital Asset Creation</a></li>
           </ul>
         </div>
-      </section>
-
-      <!-- Tech Stack Section -->
-      <section class="animate">
-        <div class="space-y-4">
-          <p class="font-semibold text-black dark:text-white">
-            Website build with
-          </p>
-          <div class="flex flex-wrap items-center gap-2 mt-5">
-            {stack.map(item => (
-              <StackCard 
-                text={item.text}
-                icon={item.icon}
-                href={item.href}
-              />
-            ))}
-          </div>
-          <div>
-            Performing reactivity and statefulness, special guest
-            <a href="https://www.solidjs.com/" target="_blank" class="w-fit group underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-              <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
-                SolidJS
-              </span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <!-- Project Preview Section -->
-      <section class="animate">
-        <div class="space-y-4">
-          <div class="flex justify-between">
-            <p class="font-semibold text-black dark:text-white">
-              Recent projects
-            </p>
-            <a href="/projects" class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-              <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
-                All projects
-              </span>
-            </a>
-          </div>
-          <ul class="space-y-4">
-            {projects.map((project) => (
-              <li>
-                <ArrowCard entry={project} />
-              </li>
-            ))}
+        <div class="footer-links">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#digital-assets-portfolio">Portfolio</a></li>
+            <li><a href="#results">Our Results</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
           </ul>
         </div>
-      </section>
-
-      <!-- Contact Section -->
-      <section class="animate">
-        <div>
-          <p class="font-semibold text-black dark:text-white">
-            Let's Connect
-          </p>
-          <p>
-            Reach out to me via email or on social media.
-          </p>
-          <div class="grid grid-cols-4 gap-y-2 mt-4 auto-cols-min">
-            {SOCIALS.map(social => (
-              <div class="col-span-1 flex items-center gap-1">
-                <span class="whitespace-nowrap truncate">
-                  {social.NAME}
-                </span>
-              </div>
-              <div class="col-span-3 truncate">
-                <a href={social.HREF} target="_blank" class="w-fit col-span-3 group flex gap-1 items-center underline decoration-[.5px] decoration-black/25 dark:decoration-white/50 hover:decoration-black dark:hover:decoration-white text-black dark:text-white underline-offset-2 blend">
-                  <span class="text-black/75 dark:text-white/75 group-hover:text-black group-hover:dark:text-white blend">
-                    {social.TEXT}
-                  </span>
-                </a>
-              </div>
-            ))}
+        <div class="footer-links">
+          <h3>Connect</h3>
+          <ul>
+            <li><a href="https://www.instagram.com/brittekdgtl/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="https://www.linkedin.com/company/brittek-digital" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="https://twitter.com/brittekdgtl" target="_blank" rel="noopener noreferrer">Twitter</a></li>
+          </ul>
         </div>
-      </section>
+      </div>
+      <p>&copy; 2024 Brittek™ Digital. All rights reserved.</p>
     </div>
-  </div>
-</PageLayout>
+  </footer>
+
+  <script>
+    // Automatic carousel for product cards
+    const carousel = document.querySelector('.product-carousel-inner');
+    const cards = document.querySelectorAll('.product-card');
+    let currentIndex = 0;
+
+    function moveCarousel() {
+      currentIndex = (currentIndex + 1) % cards.length;
+      carousel.style.transform = `translateX(-${currentIndex * (300 + 32)}px)`;
+    }
+    setInterval(moveCarousel, 5000);
+    // Product card button hover effect
+    document.querySelectorAll('.product-card a').forEach(button => {
+      button.addEventListener('mouseover', (e) => {
+        const price = e.target.getAttribute('data-price');
+        e.target.innerText = price;
+      });
+      button.addEventListener('mouseout', (e) => {
+        e.target.innerText = 'Learn More';
+      });
+    });
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+    // Testimonial slider
+    const testimonials = document.querySelectorAll('.testimonial-slide');
+    let currentTestimonial = 0;
+
+    function showTestimonial(index) {
+      testimonials.forEach(testimonial => testimonial.classList.remove('active'));
+      testimonials[index].classList.add('active');
+    }
+
+    function nextTestimonial() {
+      currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+      showTestimonial(currentTestimonial);
+    }
+    setInterval(nextTestimonial, 5000);
+    // Intersection Observer for fade-in animations
+    const fadeElems = document.querySelectorAll('.fade-in');
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          fadeObserver.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1
+    });
+    fadeElems.forEach(elem => fadeObserver.observe(elem));
+    // Mobile menu toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const nav = document.querySelector('nav');
+    menuToggle.addEventListener('click', () => {
+      nav.classList.toggle('active');
+      menuToggle.classList.toggle('active');
+    });
+    // Form validation
+    const form = document.querySelector('#contact-form');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.querySelector('#name').value.trim();
+      const email = document.querySelector('#email').value.trim();
+      const message = document.querySelector('#message').value.trim();
+      if (name === '' || email === '' || message === '') {
+        alert('Please fill in all fields');
+        return;
+      }
+      if (!isValidEmail(email)) {
+        alert('Please enter a valid email address');
+        return;
+      }
+      // If all validations pass, you can submit the form here
+      console.log('Form submitted:', {
+        name,
+        email,
+        message
+      });
+      form.reset();
+    });
+
+    function isValidEmail(email) {
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
+    // Lazy loading images
+    const images = document.querySelectorAll('img[data-src]');
+    const imgOptions = {
+      threshold: 0,
+      rootMargin: "0px 0px 300px 0px"
+    };
+    const imgObserver = new IntersectionObserver((entries, imgObserver) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const img = entry.target;
+        img.src = img.getAttribute('data-src');
+        img.removeAttribute('data-src');
+        imgObserver.unobserve(img);
+      });
+    }, imgOptions);
+    images.forEach(image => imgObserver.observe(image));
+    // Dynamic copyright year
+    const currentYear = new Date().getFullYear();
+    document.querySelector('#copyright-year').textContent = currentYear;
+    // Back to top button
+    const backToTopButton = document.querySelector('#back-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset > 300) {
+        backToTopButton.style.display = 'block';
+      } else {
+        backToTopButton.style.display = 'none';
+      }
+    });
+    backToTopButton.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+    // Add this button to your HTML
+    // <button id="back-to-top" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+    // Theme switcher
+    const themeSwitcher = document.querySelector('#theme-switcher');
+    const body = document.body;
+    themeSwitcher.addEventListener('click', () => {
+      body.classList.toggle('light-theme');
+      const isLight = body.classList.contains('light-theme');
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+      updateThemeIcon(isLight);
+    });
+
+    function updateThemeIcon(isLight) {
+      const icon = themeSwitcher.querySelector('i');
+      if (isLight) {
+        icon.classList.replace('fa-sun', 'fa-moon');
+      } else {
+        icon.classList.replace('fa-moon', 'fa-sun');
+      }
+    }
+    // Check for saved theme preference or use device preference
+    const savedTheme = localStorage.getItem('theme');
+    const devicePrefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    if (savedTheme === 'light' || (!savedTheme && !devicePrefersDark)) {
+      body.classList.add('light-theme');
+      updateThemeIcon(true);
+    }
+    // Add this button to your HTML
+    // <button id="theme-switcher" aria-label="Switch theme"><i class="fas fa-sun"></i></button>
+  </script>
+</body>
+
+</html>
