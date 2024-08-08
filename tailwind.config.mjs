@@ -1,5 +1,4 @@
 import defaultTheme from "tailwindcss/defaultTheme"
-
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
@@ -8,6 +7,10 @@ export default {
     extend: {
       fontFamily: {
         "sans": ["Atkinson", ...defaultTheme.fontFamily.sans],
+      },
+      colors: {
+        primary: '#9EFF00', // Brittek Green
+        secondary: '#EDFF00', // Sun Glare
       },
       typography: {
         DEFAULT: {
